@@ -1,6 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet, Text, Button, View, Image, ScrollView,
+} from 'react-native';
 import firebase from 'firebase';
+import {
+  Card,
+} from 'react-native-paper';
+import items from './items';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,9 +34,41 @@ if (!firebase.apps.length) {
 }
 
 export default function App() {
+  const [product, setProduct] = useState([]);
+  const [pressed, setPressed] = useState(false);
+
+  useEffect(() => {
+    items.getAllItems().then((res) => {
+      setProduct(res);
+    }).catch((err) => {
+      throw err;
+    });
+  }, [items]);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {pressed && product.map(({
+          id, productName, price, status, username, imageURL,
+        }) => (
+          <Card key={id} style={{ flex: 1, padding: 20, margin: 20 }}>
+            <Card.Content>
+              <Image
+                source={{ uri: imageURL }}
+                style={{ width: 200, height: 200, margin: 10 }}
+              />
+              <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>{`${productName}`}</Text>
+              <Text>{`NT$${price}   ${status}  ${username}`}</Text>
+            </Card.Content>
+          </Card>
+        ))}
+        <Button onPress={items.getItem} title="get product" color="#007FFF" />
+        <Text>{'\n'}</Text>
+        <Button onPress={() => { items.getAllItems().then(() => setPressed(!pressed)); }} title="get all products" color="#0000FF" />
+        <Text>{'\n'}</Text>
+        <Button onPress={items.addItem} title="add product" color="#00FF00" />
+        <Text>{'\n'}</Text>
+      </View>
+    </ScrollView>
   );
 }
