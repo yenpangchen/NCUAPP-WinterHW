@@ -3,25 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
-import firebase from 'firebase';
+import firebase from '../firebase';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyBWETzEDwTMezlKBJkRq98GTp4zkKU9mYk',
-  authDomain: 'ncuapp-winterhw.firebaseapp.com',
-  projectId: 'ncuapp-winterhw',
-  storageBucket: 'ncuapp-winterhw.appspot.com',
-  messagingSenderId: '730523483451',
-  appId: '1:730523483451:web:84d6366104f02518c9cb1e',
-  measurementId: 'G-TVJ1F2VFPE',
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
-
-const auth = firebase.auth();
+const { auth, provider } = firebase;
 
 const styles = StyleSheet.create({
   container: {
@@ -106,6 +90,24 @@ const LoginPage = () => {
       .catch((error) => alert(error.message));
   };
 
+  const googleSignin = () => {
+    auth
+      .getRedirectResult()
+      .then((result) => {
+        if (result.credential) {
+          // This gives you a Google Access Token.
+          const token = result.credential.accessToken;
+          console.log('token', token);
+        }
+        const { user } = result;
+        console.log('Logged in with:', user);
+      });
+
+    provider.addScope('profile');
+    provider.addScope('email');
+    auth.signInWithRedirect(provider);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -139,6 +141,12 @@ const LoginPage = () => {
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={googleSignin}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Sign in with Google</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
