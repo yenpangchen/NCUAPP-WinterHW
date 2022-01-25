@@ -1,3 +1,4 @@
+import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import {
@@ -90,22 +91,91 @@ const LoginPage = () => {
       .catch((error) => alert(error.message));
   };
 
-  const googleSignin = () => {
-    auth
-      .getRedirectResult()
-      .then((result) => {
-        if (result.credential) {
-          // This gives you a Google Access Token.
-          const token = result.credential.accessToken;
-          console.log('token', token);
+  // const googleSignin = () => {
+  //   auth
+  //     .getRedirectResult()
+  //     .then((result) => {
+  //       if (result.credential) {
+  //         // This gives you a Google Access Token.
+  //         const token = result.credential.accessToken;
+  //         console.log('token', token);
+  //       }
+  //       const { user } = result;
+  //       console.log('Logged in with:', user);
+  //     });
+
+  //   provider.addScope('profile');
+  //   provider.addScope('email');
+  //   auth.signInWithRedirect(provider);
+  // };
+
+  function isUserEqual(googleUser, firebaseUser) {
+    if (firebaseUser) {
+      const { providerData } = firebaseUser;
+      for (let i = 0; i < providerData.length; i += 1) {
+        if (providerData[i].providerId === provider.PROVIDER_ID
+            && providerData[i].uid === googleUser.getBasicProfile().getId()) {
+          // We don't need to reauth the Firebase connection.
+          return true;
         }
-        const { user } = result;
-        console.log('Logged in with:', user);
+      }
+    }
+    return false;
+  }
+
+  function onSignIn(googleUser) {
+    console.log('Google Auth Response', googleUser);
+    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      unsubscribe();
+      // Check if we are already signed-in Firebase with the correct user.
+      if (!isUserEqual(googleUser, firebaseUser)) {
+        // Build Firebase credential with the Google ID token.
+        const credential = provider.credential(
+          // googleUser.getAuthResponse().id_token,
+          googleUser.idToken,
+          googleUser.accessToken,
+        );
+
+        // Sign in with credential from the Google user.
+        auth.signInWithCredential(credential)
+          .then(() => { console.log('user signed in'); })
+          .catch((error) => {
+          // Handle Errors here.
+            const errorCode = error.code;
+            console.log('errorCode', errorCode);
+            const errorMessage = error.message;
+            console.log('errorMessage', errorMessage);
+          // The email of the user's account used.
+          // const { email } = error;
+          // console.log(email);
+          // The credential that was used.
+          // const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+          });
+      } else {
+        console.log('User already signed-in Firebase.');
+      }
+    });
+  }
+
+  const signInWithGoogleAsync = async () => {
+    try {
+      const result = await Google.logInAsync({
+        // androidClientId: YOUR_CLIENT_ID_HERE,
+        behavior: 'web',
+        iosClientId: '730523483451-u9had7g6o5kg1o1fboemhnek3eh53cup.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
       });
 
-    provider.addScope('profile');
-    provider.addScope('email');
-    auth.signInWithRedirect(provider);
+      if (result.type === 'success') {
+        onSignIn(result);
+        return result.accessToken;
+      }
+      return { cancelled: true };
+    } catch (e) {
+      return { error: true };
+    }
   };
 
   return (
@@ -143,7 +213,7 @@ const LoginPage = () => {
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={googleSignin}
+          onPress={signInWithGoogleAsync}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Sign in with Google</Text>

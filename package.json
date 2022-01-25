@@ -8,12 +8,15 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-google-signin/google-signin": "^7.0.4",
     "@react-navigation/core": "^6.1.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@react-navigation/stack": "^6.0.11",
     "expo": "~43.0.0",
+    "expo-app-auth": "~11.0.3",
+    "expo-google-app-auth": "~9.0.0",
     "expo-status-bar": "~1.1.0",
     "firebase": "^8.10.0",
     "react": "17.0.1",

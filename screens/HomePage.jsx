@@ -73,9 +73,7 @@ const HomePage = () => {
           </Card>
         ))}
         <Text>
-          Email:
-          {' '}
-          {auth.currentUser?.email}
+          {`Email: ${auth.currentUser.email} Username: ${auth.currentUser.displayName} ID: ${auth.currentUser.uid}`}
         </Text>
         <Image
           style={{ width: 100, height: 100, margin: 10 }}
