@@ -1,5 +1,5 @@
 import * as Google from 'expo-google-app-auth';
-import { useNavigation } from '@react-navigation/core';
+// import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View,
@@ -59,12 +59,12 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace('Home');
+        // navigation.replace('Home');
       }
     });
 

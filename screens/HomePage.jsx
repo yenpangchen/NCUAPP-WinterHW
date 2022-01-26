@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/core';
+// import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, TouchableOpacity, View, Button, Image, ScrollView,
@@ -44,13 +44,13 @@ const HomePage = () => {
     });
   }, [items]);
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
-        navigation.replace('Login');
+        // navigation.replace('Login');
       })
       .catch((error) => alert(error.message));
   };
