@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import firebase from '../firebase';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { auth, provider } = firebase;
 
@@ -13,45 +14,90 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  inputContainer: {
-    width: '80%',
+    backgroundColor: 'white',
   },
   input: {
     backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 5,
+    backgroundColor: '#F5F5F5',
+    marginTop: 10,
+    top: 200,
+    width: 300,
   },
   buttonContainer: {
     width: '60%',
-    justifyContent: 'center',
+    flex: 1,
     alignItems: 'center',
-    marginTop: 40,
+    flexDirection: 'column',
+    top: 100,
   },
   button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
+    backgroundColor: '#CACCDB',
+    width: 200,
+    height: 50,
     padding: 15,
-    borderRadius: 10,
+    borderRadius:10,
+    marginBottom: 15,
     alignItems: 'center',
+    
   },
   buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#0782F9',
+    backgroundColor: '#CACCDB',
+    borderColor: '#454545',
     borderWidth: 2,
   },
   buttonText: {
-    color: 'white',
+    color: '#454545',
     fontWeight: '700',
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: '#454545',
     fontWeight: '700',
     fontSize: 16,
+    height: 50,
+  },
+  buy: {
+		backgroundColor: 'rgba(196, 196, 196, 1)',
+		width: 184,
+		height: 44,
+		borderRadius: 30,
+    top: 230,
+    marginLeft: 20,
+  },
+  buypic: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  cart: {
+    marginTop: 10,
+    marginBottom: 50,
+    top: 220,
+  },
+  tri: {
+    width: 0,
+    height: 0,
+    borderBottomColor: "rgba(196, 196, 196, 1)",
+    backgroundColor: "transparent",
+    borderStyle: "solid",
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderBottomWidth: 15,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    transform: [{ rotate: "180deg" }],
+    top:230
+  },
+  buytext: {
+    fontFamily: 'Paytone One',
+    fontWeight: '400',
+    fontSize: 14,
+    color: 'rgba(69,69,69,1)',
+    marginTop: 12,
+    marginLeft: 20,
   },
 });
 
@@ -183,7 +229,12 @@ const LoginPage = () => {
       style={styles.container}
       behavior="padding"
     >
-      <View style={styles.inputContainer}>
+      <View style={styles.buypic}>
+        <View style={styles.buy}>
+          <Text style={styles.buytext}>Buy Something Here</Text>
+        </View> 
+        <View style={styles.tri} />
+        <Icon name='shopping-cart' size={65} color="#454545" style={styles.cart}/>
         <TextInput
           placeholder="Email"
           value={email}
@@ -200,26 +251,27 @@ const LoginPage = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+          <TouchableOpacity
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={signInWithGoogleAsync}
+          onPress={handleLogin}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Sign in with Google</Text>
+          <Text style={styles.buttonOutlineText}>Login</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+        onPress={signInWithGoogleAsync}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Sign in with Google</Text>
+      </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
+    
   );
 };
 

@@ -13,11 +13,28 @@ function toDateString(time) {
   return dateString;
 }
 
-async function getItem() {
+async function getNewItem() {
+  const itemsArray = [];
   const db = firebase.firestore();
-  const itemRef = db.collection('products').doc('tMBky4jDxVVpLaV8ZXaQ');
-  const doc = await itemRef.get();
-  console.log(doc.data());
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where('status', '==', '全新').get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
+async function getSecondhandItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where('status', '==', '二手').get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
 }
 
 async function getAllItems() {
@@ -56,7 +73,8 @@ async function addItem() {
 }
 
 export default {
-  getItem,
+  getNewItem,
+  getSecondhandItem,
   getAllItems,
   addItem,
 };
