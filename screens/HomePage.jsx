@@ -51,6 +51,7 @@ const HomePage = () => {
       .signOut()
       .then(() => {
         // navigation.replace('Login');
+        console.log('user signed out');
       })
       .catch((error) => alert(error.message));
   };

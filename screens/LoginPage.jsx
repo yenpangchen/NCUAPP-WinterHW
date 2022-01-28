@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
-import firebase from '../firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase from '../firebase';
 
 const { auth, provider } = firebase;
 
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   input: {
-    backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
@@ -38,21 +37,21 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     padding: 15,
-    borderRadius:10,
+    borderRadius: 10,
     marginBottom: 15,
     alignItems: 'center',
-    
+
   },
   buttonOutline: {
     backgroundColor: '#CACCDB',
     borderColor: '#454545',
     borderWidth: 2,
   },
-  buttonText: {
-    color: '#454545',
-    fontWeight: '700',
-    fontSize: 16,
-  },
+  // buttonText: {
+  //   color: '#454545',
+  //   fontWeight: '700',
+  //   fontSize: 16,
+  // },
   buttonOutlineText: {
     color: '#454545',
     fontWeight: '700',
@@ -60,10 +59,10 @@ const styles = StyleSheet.create({
     height: 50,
   },
   buy: {
-		backgroundColor: 'rgba(196, 196, 196, 1)',
-		width: 184,
-		height: 44,
-		borderRadius: 30,
+    backgroundColor: 'rgba(196, 196, 196, 1)',
+    width: 184,
+    height: 44,
+    borderRadius: 30,
     top: 230,
     marginLeft: 20,
   },
@@ -80,16 +79,16 @@ const styles = StyleSheet.create({
   tri: {
     width: 0,
     height: 0,
-    borderBottomColor: "rgba(196, 196, 196, 1)",
-    backgroundColor: "transparent",
-    borderStyle: "solid",
+    borderBottomColor: 'rgba(196, 196, 196, 1)',
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
     borderLeftWidth: 10,
     borderRightWidth: 10,
     borderBottomWidth: 15,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    transform: [{ rotate: "180deg" }],
-    top:230
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    transform: [{ rotate: '180deg' }],
+    top: 230,
   },
   buytext: {
     fontFamily: 'Paytone One',
@@ -232,9 +231,9 @@ const LoginPage = () => {
       <View style={styles.buypic}>
         <View style={styles.buy}>
           <Text style={styles.buytext}>Buy Something Here</Text>
-        </View> 
+        </View>
         <View style={styles.tri} />
-        <Icon name='shopping-cart' size={65} color="#454545" style={styles.cart}/>
+        <Icon name="shopping-cart" size={65} color="#454545" style={styles.cart} />
         <TextInput
           placeholder="Email"
           value={email}
@@ -251,7 +250,7 @@ const LoginPage = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-          <TouchableOpacity
+        <TouchableOpacity
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
@@ -264,14 +263,14 @@ const LoginPage = () => {
           <Text style={styles.buttonOutlineText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={signInWithGoogleAsync}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Sign in with Google</Text>
-      </TouchableOpacity>
+          onPress={signInWithGoogleAsync}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Sign in with Google</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-    
+
   );
 };
 

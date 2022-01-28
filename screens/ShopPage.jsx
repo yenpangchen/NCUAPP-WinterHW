@@ -1,16 +1,14 @@
-import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View, Button, Image, ScrollView, ImageBackground, SafeAreaView
+  StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView, TextInput,
 } from 'react-native';
 import {
   Card,
 } from 'react-native-paper';
-import firebase from 'firebase';
+import firebase from '../firebase';
 import items from '../items';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { BottomNavigation} from 'react-native-paper';
+const { auth } = firebase;
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +56,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Roboto', 
+    fontFamily: 'Roboto',
     fontWeight: '500',
     color: 'rgba(0,0,0,1)',
     width: 200,
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
   choose: {
     flex: 1,
     alignItems: 'flex-end',
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   new: {
     fontSize: 16,
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: 'rgba(0,0,0,1)',
-    transform: [{rotate:"-90deg"}],
+    transform: [{ rotate: '-90deg' }],
     width: 19.03,
     height: 2,
     backgroundColor: 'rgba(0,0,0,1)',
@@ -113,6 +111,7 @@ const styles = StyleSheet.create({
 });
 
 const ShopPage = () => {
+  const [input, setInput] = useState('');
   const [newproduct, setnewProduct] = useState([]);
   const [secondhandproduct, setsecondhandProduct] = useState([]);
   const [pressedNew, setPressedNew] = useState(true);
@@ -133,7 +132,6 @@ const ShopPage = () => {
       throw err;
     });
   }, [items]);
-  //const navigation = useNavigation();
 
   const handleSignOut = () => {
     auth
@@ -145,16 +143,14 @@ const ShopPage = () => {
   };
 
   const onPressChoice = () => {
-    setPressedNew(pressedNew  ? false : true);
-    setPressedSecond(pressedSecond ? false : true);
-    if(pressedNew === true && pressedSecond === false)
-      items.getNewItem();
-    if(pressedSecond === true && pressedNew === true)
-      items.getSecondhandItem();
+    setPressedNew(!pressedNew);
+    setPressedSecond(!pressedSecond);
+    if (pressedNew === true && pressedSecond === false) { items.getNewItem(); }
+    if (pressedSecond === true && pressedNew === true) { items.getSecondhandItem(); }
   };
 
-  function NewItemCards(pressedNew){
-    return(
+  function NewItemCards() {
+    return (
       newproduct.map(({
         id, productName, price, status, username, imageURL,
       }) => (
@@ -170,10 +166,10 @@ const ShopPage = () => {
         </Card>
       ))
     );
-  };
+  }
 
-  function SecondItemsCards(){
-    return(
+  function SecondItemsCards() {
+    return (
       secondhandproduct.map(({
         id, productName, price, status, username, imageURL,
       }) => (
@@ -189,54 +185,50 @@ const ShopPage = () => {
         </Card>
       ))
     );
-  };
+  }
 
-  return(
+  return (
     <SafeAreaView style={styles.container}>
-    <ScrollView>
-      <View style={styles.searchbar}>          
-        <Image
-        style={styles.searchpic}
-        source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A13?alt=media&token=d690711c-33eb-4e04-aac8-946dbb7a47c5",
-        }}
-        />
-        <Text style={styles.searchtext}>Search</Text>
+      <ScrollView>
+        <View style={styles.searchbar}>
+          <Image
+            style={styles.searchpic}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A13?alt=media&token=d690711c-33eb-4e04-aac8-946dbb7a47c5',
+            }}
+          />
+          <View style={styles.searchtext}>
+            <TextInput style={{ width: 180 }} placeholder="search" onChangeText={(text) => setInput(text)} value={input} />
+          </View>
 
-        <Image
-        style={styles.heart}
-        source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A12?alt=media&token=1c1a0478-0c62-4224-8686-5e085bc5b1c4",
-        }}
-        />
-        <Image
-        style={styles.message}
-        source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A15?alt=media&token=6675c1c5-91a9-4b65-8dd7-ebb9dd4222a0",
-        }}
-        />
-      </View>
-      <View style={styles.choose}> 
-        <Text style={styles.title}>購買</Text> 
-        <TouchableOpacity onPress={onPressChoice}>
-          <Text style={pressedNew ? styles.new : styles.newpress}>全新</Text>
-        </TouchableOpacity>
-        <View style={styles.Line1} />
-        <TouchableOpacity onPress={onPressChoice}>
-          <Text style={pressedSecond ? styles.second : styles.secondpress}>二手</Text>
-        </TouchableOpacity>
-      </View>
-        {pressedNew ? <NewItemCards/> : <View/>}
-        {pressedSecond ? <SecondItemsCards/> : <View/> }
-      
+          <Image
+            style={styles.heart}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A12?alt=media&token=1c1a0478-0c62-4224-8686-5e085bc5b1c4',
+            }}
+          />
+          <Image
+            style={styles.message}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A15?alt=media&token=6675c1c5-91a9-4b65-8dd7-ebb9dd4222a0',
+            }}
+          />
+        </View>
+        <View style={styles.choose}>
+          <Text style={styles.title}>購買</Text>
+          <TouchableOpacity onPress={onPressChoice}>
+            <Text style={pressedNew ? styles.new : styles.newpress}>全新</Text>
+          </TouchableOpacity>
+          <View style={styles.Line1} />
+          <TouchableOpacity onPress={onPressChoice}>
+            <Text style={pressedSecond ? styles.second : styles.secondpress}>二手</Text>
+          </TouchableOpacity>
+        </View>
+        {pressedNew ? <NewItemCards /> : <View />}
+        {pressedSecond ? <SecondItemsCards /> : <View /> }
 
-      
-
-      
-         
-    </ScrollView>
-   
-  </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
