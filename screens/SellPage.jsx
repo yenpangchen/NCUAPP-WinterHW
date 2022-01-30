@@ -7,16 +7,14 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-// import {
-//   getStorage, ref, uploadBytes, getDownloadURL,
-// } from 'firebase/storage';
 import { CheckBox, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import uuid from 'react-native-uuid';
 import firebase from '../firebase';
+import items from '../items';
 // import CheckBoxIcon from 'react-native-elements/dist/checkbox/CheckBoxIcon';
 
-const { storage } = firebase;
+const { auth, storage } = firebase;
 
 const styles = StyleSheet.create({
   container: {
@@ -105,6 +103,7 @@ const styles = StyleSheet.create({
 const SellPage = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [imageURL, setImageURL] = useState('');
   const [Name, setName] = useState('');
   const [Description, setDescription] = useState('');
   const [Dollar, setDollar] = useState(0);
@@ -128,11 +127,13 @@ const SellPage = () => {
 
     const ref = storage
       .ref()
-      .child(uuid.v4());
+      .child(`images/${uuid.v4()}`);
     const snapshot = await ref.put(blob);
 
     // We're done with the blob, close and release it
     blob.close();
+    snapshot.ref.getDownloadURL()
+      .then((url) => { console.log('downloadurl', url); setImageURL(url); });
 
     return snapshot.ref.getDownloadURL();
   }
@@ -201,9 +202,40 @@ const SellPage = () => {
     setCheckNew(true);
     setCheckSecond(false);
   };
+
   const SecondStatus = () => {
     setCheckSecond(true);
     setCheckNew(false);
+  };
+
+  const handleSend = () => {
+    console.log('send');
+    const product = {
+      description: Description,
+      imageURL,
+      price: Dollar,
+      productName: Name,
+      status: checkNew ? '全新' : '二手',
+      userPhotoURL: auth.currentUser.photoURL,
+      userId: auth.currentUser.uid,
+      username: auth.currentUser.displayName,
+    };
+    console.log('product', product);
+    if (image === null) {
+      Alert.alert('請新增商品照片');
+      // console.log('請新增商品照片');
+    } else if (Name === '') {
+      Alert.alert('請輸入商品名稱');
+    } else if (Description === '') {
+      Alert.alert('請輸入商品敘述');
+    } else if (Dollar === 0) {
+      Alert.alert('商品價格不得為0');
+    } else if (checkNew === false && checkSecond === false) {
+      Alert.alert('請勾選商品狀態');
+    } else {
+      console.log('新增商品成功!');
+      items.addItem(product);
+    }
   };
 
   return (
@@ -232,7 +264,7 @@ const SellPage = () => {
             商品名稱
           </Text>
         </View>
-        <TextInput style={styles.input} onChangeText={setName} value={Name} placeholder="請輸入商品名稱" />
+        <TextInput style={styles.input} onChangeText={(text) => { setName(text); }} value={Name} placeholder="請輸入商品名稱" />
         <View style={styles.nameContainer}>
           <Icon name="info-circle" color="#454545" size={20} />
           <Text style={{
@@ -242,7 +274,7 @@ const SellPage = () => {
             商品描述
           </Text>
         </View>
-        <TextInput style={styles.input1} onChangeText={setDescription} value={Description} placeholder="請輸入商品敘述" />
+        <TextInput style={styles.input1} onChangeText={(text) => { setDescription(text); }} value={Description} placeholder="請輸入商品敘述" />
 
         <View style={styles.nameContainer}>
           <Icon name="dollar" color="#454545" size={20} />
@@ -253,7 +285,7 @@ const SellPage = () => {
             價格NT$
           </Text>
         </View>
-        <TextInput style={styles.input2} onChangeText={setDollar} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
+        <TextInput style={styles.input2} onChangeText={(e) => { setDollar(e); }} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
 
         <View style={styles.nameContainer}>
           <Icon name="history" color="#454545" size={20} />
@@ -296,7 +328,7 @@ const SellPage = () => {
           width: 100,
           marginVertical: 10,
         }}
-        onPress={() => console.log('aye')}
+        onPress={handleSend}
         //  style={{bottom:10}}
       />
     </KeyboardAvoidingView>

@@ -49,21 +49,35 @@ async function getAllItems() {
   return itemsArray;
 }
 
-async function addItem() {
+async function addItem(product) {
   const db = firebase.firestore();
   const ItemsRef = db.collection('products');
   const currentTime = new Date();
+  const {
+    description, imageURL, price, productName, status, userPhotoURL, userId, username,
+  } = product;
   const item = {
     createAt: currentTime,
-    description: 'add item',
-    imageURL: 'https://i.imgur.com/RVTvLTG.png',
-    price: 120,
-    productName: 'iphone12',
-    status: '全新',
-    userPhotoURL: '',
-    user_uid: '',
-    username: 'abc123',
+    description,
+    imageURL,
+    price,
+    productName,
+    status,
+    userPhotoURL,
+    user_uid: userId,
+    username,
   };
+  // const item = {
+  //   createAt: currentTime,
+  //   description: 'add item',
+  //   imageURL: 'https://i.imgur.com/RVTvLTG.png',
+  //   price: 120,
+  //   productName: 'iphone12',
+  //   status: '全新',
+  //   userPhotoURL: '',
+  //   user_uid: '',
+  //   username: 'abc123',
+  // };
   ItemsRef.add(item);
   const querySnapshot = await ItemsRef.get();
   querySnapshot.forEach((doc) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView, TextInput,
+  StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView, TextInput, Alert,
 } from 'react-native';
 import {
   Card,
@@ -133,20 +133,40 @@ const ShopPage = () => {
     });
   }, [items]);
 
+  const handleSearch = (text) => {
+    setInput(text);
+    const search = input.toLowerCase();
+    let filteredNames;
+    if (pressedNew === true && pressedSecond === false) {
+      const newProductName = newproduct.map((product) => (product.productName));
+      filteredNames = newProductName.filter((name) => (name.toLowerCase().includes(search)));
+      return filteredNames;
+    }
+    if (pressedSecond === true && pressedNew === false) {
+      const secondHandProductName = secondhandproduct.map((product) => (product.productName));
+      filteredNames = secondHandProductName
+        .filter((name) => (name.toLowerCase().includes(search)));
+      return filteredNames;
+    }
+
+    console.log('filteredNames', filteredNames);
+    return filteredNames;
+  };
+
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
         // navigation.replace('Login');
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => Alert.alert(error.message));
   };
 
   const onPressChoice = () => {
     setPressedNew(!pressedNew);
     setPressedSecond(!pressedSecond);
     if (pressedNew === true && pressedSecond === false) { items.getNewItem(); }
-    if (pressedSecond === true && pressedNew === true) { items.getSecondhandItem(); }
+    if (pressedSecond === true && pressedNew === false) { items.getSecondhandItem(); }
   };
 
   function NewItemCards() {
@@ -198,7 +218,7 @@ const ShopPage = () => {
             }}
           />
           <View style={styles.searchtext}>
-            <TextInput style={{ width: 180 }} placeholder="search" onChangeText={(text) => setInput(text)} value={input} />
+            <TextInput style={{ width: 180 }} placeholder="search" onChangeText={handleSearch} value={input} />
           </View>
 
           <Image
