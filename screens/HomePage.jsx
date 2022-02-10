@@ -46,15 +46,15 @@ const HomePage = () => {
 
   // const navigation = useNavigation();
 
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        // navigation.replace('Login');
-        console.log('user signed out');
-      })
-      .catch((error) => alert(error.message));
-  };
+  // const handleSignOut = () => {
+  //   auth
+  //     .signOut()
+  //     .then(() => {
+  //       // navigation.replace('Login');
+  //       console.log('user signed out');
+  //     })
+  //     .catch((error) => alert(error.message));
+  // };
 
   return (
     <ScrollView>
@@ -73,19 +73,7 @@ const HomePage = () => {
             </Card.Content>
           </Card>
         ))}
-        <Text>
-          {`Email: ${auth.currentUser.email} Username: ${auth.currentUser.displayName} ID: ${auth.currentUser.uid}`}
-        </Text>
-        <Image
-          style={{ width: 100, height: 100, margin: 10 }}
-          source={{ uri: auth.currentUser?.photoURL }}
-        />
-        <TouchableOpacity
-          onPress={handleSignOut}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Sign out</Text>
-        </TouchableOpacity>
+
         <Button onPress={items.getItem} title="get product" color="#007FFF" />
         <Text>{'\n'}</Text>
         <Button onPress={() => { items.getAllItems().then(() => setPressed(!pressed)); }} title="get all products" color="#0000FF" />
