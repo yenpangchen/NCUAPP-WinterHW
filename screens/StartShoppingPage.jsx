@@ -55,6 +55,8 @@ const StartShoppingPage = () => {
     });
   }, [items]);
 
+  const navigation = useNavigation();
+
   return (
     <ScrollView bounces={false} showsVerticalScrollIndicator={false} style={styles.phone}>
       <View style={styles.TopBar}>
@@ -81,7 +83,18 @@ const StartShoppingPage = () => {
         {product.map(({
           id, productName, price, status, username, imageURL,
         }) => (
-          <Card key={id} style={styles.items}>
+          <Card
+            key={id}
+            style={styles.items}
+            onPress={() => navigation.navigate('Product', {
+              Id: id,
+              ProductName: productName,
+              Price: price,
+              Status: status,
+              Username: username,
+              ImageURL: imageURL,
+            })}
+          >
             <Card.Content>
               <Image
                 source={{ uri: imageURL }}

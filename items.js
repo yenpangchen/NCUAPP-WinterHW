@@ -20,6 +20,13 @@ async function getItem() {
   console.log(doc.data());
 }
 
+async function getItemById(id) {
+  const db = firebase.firestore();
+  const itemRef = db.collection('products').doc(id);
+  const doc = await itemRef.get();
+  return doc;
+}
+
 async function getAllItems() {
   const itemsArray = [];
   const db = firebase.firestore();
@@ -57,6 +64,7 @@ async function addItem() {
 
 export default {
   getItem,
+  getItemById,
   getAllItems,
   addItem,
 };
