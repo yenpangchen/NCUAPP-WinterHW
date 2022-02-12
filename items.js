@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-
+const { auth } = firebase;
 // Functions
 function toDateString(time) {
   const date = new Date(time.seconds * 1000);
@@ -30,6 +30,21 @@ async function getSecondhandItem() {
   const db = firebase.firestore();
   const itemRef = db.collection('products');
   const querySnapshot = await itemRef.where('status', '==', '二手').get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
+
+async function getUserItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const user = firebase.auth().currentUser;
+  const querySnapshot = await itemRef.where('user_uid', '==', user.uid).get();
+  
   querySnapshot.forEach((doc) => {
     itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
   });
@@ -90,5 +105,6 @@ export default {
   getNewItem,
   getSecondhandItem,
   getAllItems,
+  getUserItem,
   addItem,
 };

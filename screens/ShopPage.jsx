@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView, TextInput, Alert,
+  StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView, TextInput, Alert, RefreshControl
 } from 'react-native';
 import {
   Card,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   searchtext: {
     fontSize: 16,
-    fontFamily: 'Roboto',
+    //fontFamily: 'normal',
     color: 'rgba(196,196,196,1)',
     width: 55,
     height: 17,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Roboto',
+    //fontFamily: 'normal',
     fontWeight: '500',
     color: 'rgba(0,0,0,1)',
     width: 200,
@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
   },
   new: {
     fontSize: 16,
-    fontFamily: 'Roboto',
+    //fontFamily: 'Roboto',
     fontWeight: '500',
     color: 'black',
     top: 8,
   },
   newpress: {
     fontSize: 16,
-    fontFamily: 'Roboto',
+    //fontFamily: 'Roboto',
     fontWeight: '300',
     color: '#C4C4C4',
     top: 8,
@@ -96,14 +96,14 @@ const styles = StyleSheet.create({
   },
   second: {
     fontSize: 16,
-    fontFamily: 'Roboto',
+    //fontFamily: 'Roboto',
     fontWeight: '500',
     color: 'black',
     top: 8,
   },
   secondpress: {
     fontSize: 16,
-    fontFamily: 'Roboto',
+    //fontFamily: 'Roboto',
     fontWeight: '300',
     color: '#C4C4C4',
     top: 8,
@@ -207,8 +207,21 @@ const ShopPage = () => {
     );
   }
 
+  const [Refresh, setRefresh] = useState(false);
+  const onRefresh = () => {
+    setRefresh(true);
+    setTimeout(()=>{setRefresh(false)}, 500);
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} 
+    refreshControl={
+      <RefreshControl
+        refreshing={Refresh}
+        onRefresh={onRefresh}
+      />
+    }
+    >
       <ScrollView>
         <View style={styles.searchbar}>
           <Image
