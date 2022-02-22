@@ -221,12 +221,15 @@ const ShopPage = () => {
             <TextInput style={{ width: 180 }} placeholder="search" onChangeText={handleSearch} value={input} />
           </View>
 
-          <Image
-            style={styles.heart}
-            source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A12?alt=media&token=1c1a0478-0c62-4224-8686-5e085bc5b1c4',
-            }}
-          />
+          <TouchableOpacity>
+            <Image
+              style={styles.heart}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/7VTRA1LARbhmV9G9egMojJ-19%3A12?alt=media&token=1c1a0478-0c62-4224-8686-5e085bc5b1c4',
+              }}
+            />
+          </TouchableOpacity>
+
           <Image
             style={styles.message}
             source={{
