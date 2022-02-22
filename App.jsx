@@ -33,7 +33,7 @@ function MainApp() {
               iconName = focused ? 'home' : 'home';
             } else if (rn === '收購/租借') {
               iconName = focused ? 'shopping-bag' : 'shopping-bag';
-            } else if (rn === '賣') {
+            } else if (rn === '發文') {
               iconName = focused ? 'plus' : 'plus';
             } else if (rn === '購買') {
               iconName = focused ? 'shopping-cart' : 'shopping-cart';
@@ -53,7 +53,7 @@ function MainApp() {
 
         <Tab.Screen options={{ headerShown: false }} name="首頁" component={HomePage} />
         <Tab.Screen options={{ headerShown: false }} name="收購/租借" component={RentPage} />
-        <Tab.Screen options={{ headerShown: false }} name="賣" component={SellPage} />
+        <Tab.Screen options={{ headerShown: false }} name="發文" component={SellPage} />
         <Tab.Screen options={{ headerShown: false }} name="購買" component={ShopPage} />
         <Tab.Screen options={{ headerShown: false }} name="個人" component={PersonalPage} />
 

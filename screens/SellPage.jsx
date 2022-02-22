@@ -3,7 +3,7 @@ import {
   Text,
   KeyboardAvoidingView,
   View,
-  Image, TextInput, TouchableOpacity, Alert,
+  Image, TextInput, TouchableOpacity, Alert, RefreshControl, ScrollView
 } from 'react-native';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import uuid from 'react-native-uuid';
 import firebase from '../firebase';
 import items from '../items';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import CheckBoxIcon from 'react-native-elements/dist/checkbox/CheckBoxIcon';
 
 const { auth, storage } = firebase;
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    bottom: 20,
+    //bottom: 20,
   },
   add: {
     borderWidth: 1,
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 15,
     marginRight: 20,
+    top:70
   },
   addtext: {
     fontSize: 14,
@@ -50,11 +52,13 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
     backgroundColor: '#C4C4C4',
+    top:70
   },
   NAMEcontainer: {
     flex: 1,
     flexDirection: 'column',
-    bottom: 100,
+    top: 60,
+    alignItems:'flex-start'
   },
   nameContainer: {
     flexDirection: 'row',
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
   // },
 });
 
-const SellPage = () => {
+const SellPage = props => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [imageURL, setImageURL] = useState('');
@@ -109,6 +113,9 @@ const SellPage = () => {
   const [Dollar, setDollar] = useState(0);
   const [checkNew, setCheckNew] = useState(false);
   const [checkSecond, setCheckSecond] = useState(false);
+  const [checkSell, setCheckSell] = useState(false);
+  const [checkAcquire, setCheckAcquire] = useState(false);
+  const [checkRent, setCheckrRent] = useState(false);
 
   async function uploadImageAsync(uri) {
     const blob = await new Promise((resolve, reject) => {
@@ -208,6 +215,24 @@ const SellPage = () => {
     setCheckNew(false);
   };
 
+  const SellStatus = () => {
+    setCheckSell(true);
+    setCheckAcquire(false);
+    setCheckrRent(false);
+  };
+
+  const AcquireStatus = () => {
+    setCheckSell(false);
+    setCheckAcquire(true);
+    setCheckrRent(false);
+  };
+
+  const RentStatus = () => {
+    setCheckSell(false);
+    setCheckAcquire(false);
+    setCheckrRent(true);
+  };
+
   const handleSend = () => {
     console.log('send');
     const product = {
@@ -236,66 +261,84 @@ const SellPage = () => {
       console.log('新增商品成功!');
       items.addItem(product);
     }
+    onRefresh();
   };
 
+  const [Refresh, setRefresh] = useState(false);
+  const onRefresh = () => {
+    setRefresh(true);
+    setTimeout(()=>{setRefresh(false), setDollar(0), setDescription(''), setName(''), setUploading(false), 
+    setImageURL(''), setImage(null), setCheckNew(false), setCheckSecond(false), setCheckSell(false)
+    setCheckAcquire(false), setCheckrRent(false)}, 500)
+  }
   return (
-    <KeyboardAvoidingView
+    <View
       style={styles.container}
       behavior="padding"
     >
-      <View style={styles.addcontainer}>
-        <View style={styles.add}>
-          <TouchableOpacity onPress={pickImage}>
-            <Text style={styles.addtext}>+ 新增照片</Text>
-          </TouchableOpacity>
-        </View>
-        {image
-          ? <Image source={{ uri: image }} style={styles.photo} />
-          : <Image style={styles.photo} />}
-      </View>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={Refresh}
+          onRefresh={onRefresh}
+        />
+      }
+    >
+    <View style={styles.addcontainer}>
+    <Icon name="times" color="#454545" size={30} style={{bottom:10}} onPress={ ()=> {props.navigation.goBack()}} />
+     <View style={styles.add}>
+       <TouchableOpacity onPress={pickImage}>
+         <Text style={styles.addtext}>+ 新增照片</Text>
+       </TouchableOpacity>
+     </View>
+     {image
+       ? <Image source={{ uri: image }} style={styles.photo} />
+       : <Image style={styles.photo} />}
+   </View>
 
-      <View style={styles.NAMEcontainer}>
-        <View style={styles.nameContainer}>
-          <Icon name="bullhorn" color="#454545" size={20} />
-          <Text style={{
-            color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-          }}
-          >
-            商品名稱
-          </Text>
-        </View>
-        <TextInput style={styles.input} onChangeText={(text) => { setName(text); }} value={Name} placeholder="請輸入商品名稱" />
-        <View style={styles.nameContainer}>
-          <Icon name="info-circle" color="#454545" size={20} />
-          <Text style={{
-            color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-          }}
-          >
-            商品描述
-          </Text>
-        </View>
-        <TextInput style={styles.input1} onChangeText={(text) => { setDescription(text); }} value={Description} placeholder="請輸入商品敘述" />
+   <View style={styles.NAMEcontainer}>
+     <View style={styles.nameContainer}>
+       <Icon name="bullhorn" color="#454545" size={20} />
+       <Text style={{
+         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+       }}
+       >
+         商品名稱
+       </Text>
+     </View>
+     <TextInput style={styles.input} onChangeText={(text) => { setName(text); }} value={Name} placeholder="請輸入商品名稱" />
+     <View style={styles.nameContainer}>
+       <Icon name="info-circle" color="#454545" size={20} />
+       <Text style={{
+         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+       }}
+       >
+         商品描述
+       </Text>
+     </View>
+     <TextInput style={styles.input1} onChangeText={(text) => { setDescription(text); }} value={Description} placeholder="請輸入商品敘述" />
 
-        <View style={styles.nameContainer}>
-          <Icon name="dollar" color="#454545" size={20} />
-          <Text style={{
-            color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-          }}
-          >
-            價格NT$
-          </Text>
-        </View>
-        <TextInput style={styles.input2} onChangeText={(e) => { setDollar(e); }} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
+     <View style={styles.nameContainer}>
+       <Icon name="dollar" color="#454545" size={20} />
+       <Text style={{
+         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+       }}
+       >
+         價格NT$
+       </Text>
+     </View>
+     <TextInput style={styles.input2} onChangeText={(e) => { setDollar(e); }} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
 
-        <View style={styles.nameContainer}>
-          <Icon name="history" color="#454545" size={20} />
-          <Text style={{
-            color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-          }}
-          >
-            商品狀態
-          </Text>
-        </View>
+     <View style={styles.nameContainer}>
+       <Icon name="history" color="#454545" size={20} />
+       <Text style={{
+         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+       }}
+       >
+         商品狀態
+       </Text>
+     </View>
+     <View style={{height:55, width: 120}}>
         <CheckBox
           center
           title="全新"
@@ -313,25 +356,65 @@ const SellPage = () => {
           onPress={SecondStatus}
         />
       </View>
-      <Button
-        title="發佈"
-        loading={false}
-        loadingProps={{ size: 'small', color: 'white' }}
-        buttonStyle={{
-          backgroundColor: '#777B9A',
-          borderRadius: 15,
-        }}
-        titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
-        containerStyle={{
-          marginHorizontal: 40,
-          height: 50,
-          width: 100,
-          marginVertical: 10,
-        }}
-        onPress={handleSend}
-        //  style={{bottom:10}}
-      />
-    </KeyboardAvoidingView>
+    </View>
+    <View style={styles.nameContainer}>
+    <Icon name="angle-double-down" color="#454545" size={20} style={{left:180, bottom:15}}/>
+    <Text style={{
+      color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5, left:180, bottom:15
+    }}
+    >
+      發文類別
+    </Text>
+  </View>
+  <View style={{height:55, width: 120, left:180, bottom:15}}>
+  <CheckBox
+    center
+    title="出售"
+    checked={checkSell}
+    checkedIcon="dot-circle-o"
+    uncheckedIcon="circle-o"
+    onPress={SellStatus}
+  />
+  <CheckBox
+    center
+    title="收購"
+    checked={checkAcquire}
+    checkedIcon="dot-circle-o"
+    uncheckedIcon="circle-o"
+    onPress={AcquireStatus}
+  />
+  <CheckBox
+  center
+  title="租借"
+  checked={checkRent}
+  checkedIcon="dot-circle-o"
+  uncheckedIcon="circle-o"
+  onPress={RentStatus}
+/>
+   </View>
+
+    <Button
+    title="發佈"
+    loading={false}
+    loadingProps={{ size: 'small', color: 'white' }}
+    buttonStyle={{
+      backgroundColor: '#777B9A',
+      borderRadius: 15,
+    }}
+    titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
+    containerStyle={{
+      marginHorizontal: 40,
+      height: 50,
+      width: 100,
+      marginVertical: 5,
+      marginLeft:10,
+      top:70
+    }}
+    onPress={handleSend}
+  
+  />
+    </ScrollView>
+    </View>
   );
 };
 

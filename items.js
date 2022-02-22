@@ -37,6 +37,20 @@ async function getSecondhandItem() {
   return itemsArray;
 }
 
+async function getUserItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const user = firebase.auth().currentUser;
+  const querySnapshot = await itemRef.where('user_uid', '==', user.uid).get();
+
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
 async function getAllItems() {
   const itemsArray = [];
   const db = firebase.firestore();
@@ -90,5 +104,6 @@ export default {
   getNewItem,
   getSecondhandItem,
   getAllItems,
+  getUserItem,
   addItem,
 };
