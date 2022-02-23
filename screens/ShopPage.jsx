@@ -4,7 +4,7 @@ import {
   SafeAreaView, TextInput, Alert, RefreshControl,
 } from 'react-native';
 import {
-  Card,
+  Card, Searchbar,
 } from 'react-native-paper';
 import firebase from '../firebase';
 import items from '../items';
@@ -211,20 +211,24 @@ const ShopPage = () => {
   const [Refresh, setRefresh] = useState(false);
   const onRefresh = () => {
     setRefresh(true);
-    setTimeout(() => { setRefresh(false); }, 500);
+    items.getAllItems().then((res) => {
+      setTimeout(() => { setRefresh(false); }, 500);
+    });
+    
   };
 
   return (
     <SafeAreaView
       style={styles.container}
+    >
+      <ScrollView
       refreshControl={(
         <RefreshControl
           refreshing={Refresh}
           onRefresh={onRefresh}
         />
     )}
-    >
-      <ScrollView>
+      >
         <View style={styles.searchbar}>
           <Image
             style={styles.searchpic}
