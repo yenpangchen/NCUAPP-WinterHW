@@ -119,7 +119,7 @@ const ShopPage = () => {
   const [pressedSecond, setPressedSecond] = useState(false);
 
   useEffect(() => {
-    items.getNewItem().then((res) => {
+    items.getSellNewItem().then((res) => {
       setnewProduct(res);
     }).catch((err) => {
       throw err;
@@ -127,7 +127,7 @@ const ShopPage = () => {
   }, [items]);
 
   useEffect(() => {
-    items.getSecondhandItem().then((res) => {
+    items.getSellSecondItem().then((res) => {
       setsecondhandProduct(res);
     }).catch((err) => {
       throw err;
@@ -166,14 +166,14 @@ const ShopPage = () => {
   const onPressChoice = () => {
     setPressedNew(!pressedNew);
     setPressedSecond(!pressedSecond);
-    if (pressedNew === true && pressedSecond === false) { items.getNewItem(); }
-    if (pressedSecond === true && pressedNew === false) { items.getSecondhandItem(); }
+    if (pressedNew === true && pressedSecond === false) { items.getSellNewItem(); }
+    if (pressedSecond === true && pressedNew === false) { items.getSellSecondItem(); }
   };
 
   function NewItemCards() {
     return (
       newproduct.map(({
-        id, productName, price, status, username, imageURL,
+        id, productName, price, status, username, imageURL,type
       }) => (
         <Card key={id} style={{ flex: 1, padding: 20, margin: 20 }}>
           <Card.Content>
@@ -182,7 +182,7 @@ const ShopPage = () => {
               style={{ width: 200, height: 200, margin: 10 }}
             />
             <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>{`${productName}`}</Text>
-            <Text>{`NT$${price}   ${status}  ${username}`}</Text>
+            <Text>{`NT$${price}  ${type}  ${status}  ${username}`}</Text>
           </Card.Content>
         </Card>
       ))
@@ -192,7 +192,7 @@ const ShopPage = () => {
   function SecondItemsCards() {
     return (
       secondhandproduct.map(({
-        id, productName, price, status, username, imageURL,
+        id, productName, price, status, username, imageURL, type
       }) => (
         <Card key={id} style={{ flex: 1, padding: 20, margin: 20 }}>
           <Card.Content>
@@ -201,7 +201,7 @@ const ShopPage = () => {
               style={{ width: 200, height: 200, margin: 10 }}
             />
             <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>{`${productName}`}</Text>
-            <Text>{`NT$${price}   ${status}  ${username}`}</Text>
+            <Text>{`NT$${price}  ${type}  ${status}  ${username}`}</Text>
           </Card.Content>
         </Card>
       ))
