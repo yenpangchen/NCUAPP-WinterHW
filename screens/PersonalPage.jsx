@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
   heart: {
     width: 28,
     height: 25,
-    marginTop: 12,
+    top: 22,
     //marginLeft: 150,
   },
   message: {
     width: 28,
     height: 25,
-    marginTop: 12,
+    top: 22,
     //marginLeft: 20,
   },
 });
@@ -70,7 +70,7 @@ const PersonalPage = () => {
   function UserItemsCards() {
     return (
       userproduct.map(({
-        id, productName, price, status, username, imageURL,
+        id, productName, price, status, username, imageURL, type
       }) => (
         <Card key={id} style={{ flex: 1, padding: 20, margin: 20, width:220, height:250}}>
           <Card.Content>
@@ -79,7 +79,10 @@ const PersonalPage = () => {
               style={{ width: 100, height: 100, margin: 10 }}
             />
             <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize:14 }}>{`${productName}`}</Text>
-            <Text style={{ marginBottom: 5}}>{`NT$${price}   ${status}`}</Text>
+            <View>
+              <Text style={{ marginBottom: 5}}>{`NT$${price}  ${type}  ${status}`}</Text>
+            </View>
+            
             <Text>{`${username}`}</Text>
           </Card.Content>
         </Card>

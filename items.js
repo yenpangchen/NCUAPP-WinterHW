@@ -13,6 +13,54 @@ function toDateString(time) {
   return dateString;
 }
 
+async function getSellNewItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where("status", "==", "全新").where("type", "==", "出售").get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
+async function getSellSecondItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where("status", "==", "二手", "&&", "type", "==", "出售").get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
+async function getRentItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where('type', '==', '租借').get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
+async function getAcquireItem() {
+  const itemsArray = [];
+  const db = firebase.firestore();
+  const itemRef = db.collection('products');
+  const querySnapshot = await itemRef.where('type', '==', '收購').get();
+  querySnapshot.forEach((doc) => {
+    itemsArray.push({ createAt: toDateString(doc.data().createAt), ...doc.data(), id: doc.id });
+  });
+  console.log(itemsArray);
+  return itemsArray;
+}
+
 async function getNewItem() {
   const itemsArray = [];
   const db = firebase.firestore();
@@ -104,6 +152,10 @@ export default {
   getNewItem,
   getSecondhandItem,
   getAllItems,
+  getSellNewItem,
+  getSellSecondItem,
   getUserItem,
+  getRentItem,
+  getAcquireItem,
   addItem,
 };
