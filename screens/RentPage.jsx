@@ -218,16 +218,14 @@ const RentPage = () => {
   };
 
   return (
-    <SafeAreaView
-      style={styles.container}
-    >
+    <SafeAreaView style={styles.container}>
       <ScrollView
-      refreshControl={(
-        <RefreshControl
-          refreshing={Refresh}
-          onRefresh={onRefresh}
-        />
-    )}
+        refreshControl={(
+          <RefreshControl
+            refreshing={Refresh}
+            onRefresh={onRefresh}
+          />
+        )}
       >
         <View style={styles.searchbar}>
           <Image
@@ -268,7 +266,6 @@ const RentPage = () => {
         </View>
         {pressedNew ? <NewItemCards /> : <View />}
         {pressedSecond ? <SecondItemsCards /> : <View /> }
-
       </ScrollView>
     </SafeAreaView>
   );

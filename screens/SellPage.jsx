@@ -276,144 +276,143 @@ const SellPage = props => {
       style={styles.container}
       behavior="padding"
     >
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={Refresh}
-          onRefresh={onRefresh}
-        />
-      }
-    >
-    <View style={styles.addcontainer}>
-    <Icon name="times" color="#454545" size={30} style={{bottom:10}} onPress={ ()=> {props.navigation.goBack()}} />
-     <View style={styles.add}>
-       <TouchableOpacity onPress={pickImage}>
-         <Text style={styles.addtext}>+ 新增照片</Text>
-       </TouchableOpacity>
-     </View>
-     {image
-       ? <Image source={{ uri: image }} style={styles.photo} />
-       : <Image style={styles.photo} />}
-   </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={Refresh}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <View style={styles.addcontainer}>
+          <Icon name="times" color="#454545" size={30} style={{bottom:10}} onPress={ ()=> {props.navigation.goBack()}} />
+          <View style={styles.add}>
+            <TouchableOpacity onPress={pickImage}>
+              <Text style={styles.addtext}>+ 新增照片</Text>
+            </TouchableOpacity>
+          </View>
+          {image
+            ? <Image source={{ uri: image }} style={styles.photo} />
+            : <Image style={styles.photo} />}
+        </View>
 
-   <View style={styles.NAMEcontainer}>
-     <View style={styles.nameContainer}>
-       <Icon name="bullhorn" color="#454545" size={20} />
-       <Text style={{
-         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-       }}
-       >
-         商品名稱
-       </Text>
-     </View>
-     <TextInput style={styles.input} onChangeText={(text) => { setName(text); }} value={Name} placeholder="請輸入商品名稱" />
-     <View style={styles.nameContainer}>
-       <Icon name="info-circle" color="#454545" size={20} />
-       <Text style={{
-         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-       }}
-       >
-         商品描述
-       </Text>
-     </View>
-     <TextInput style={styles.input1} onChangeText={(text) => { setDescription(text); }} value={Description} placeholder="請輸入商品敘述" />
+        <View style={styles.NAMEcontainer}>
+          <View style={styles.nameContainer}>
+            <Icon name="bullhorn" color="#454545" size={20} />
+            <Text style={{
+              color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+            }}
+            >
+              商品名稱
+            </Text>
+          </View>
+          <TextInput style={styles.input} onChangeText={(text) => { setName(text); }} value={Name} placeholder="請輸入商品名稱" />
+          <View style={styles.nameContainer}>
+            <Icon name="info-circle" color="#454545" size={20} />
+            <Text style={{
+              color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+            }}
+            >
+              商品描述
+            </Text>
+          </View>
+          <TextInput style={styles.input1} onChangeText={(text) => { setDescription(text); }} value={Description} placeholder="請輸入商品敘述" />
 
-     <View style={styles.nameContainer}>
-       <Icon name="dollar" color="#454545" size={20} />
-       <Text style={{
-         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-       }}
-       >
-         價格NT$
-       </Text>
-     </View>
-     <TextInput style={styles.input2} onChangeText={(e) => { setDollar(e); }} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
+          <View style={styles.nameContainer}>
+            <Icon name="dollar" color="#454545" size={20} />
+            <Text style={{
+              color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+            }}
+            >
+              價格NT$
+            </Text>
+          </View>
+          <TextInput style={styles.input2} onChangeText={(e) => { setDollar(e); }} value={Dollar} placeholder="0" keyboardType="number-pad" returnKeyType="done" />
 
-     <View style={styles.nameContainer}>
-       <Icon name="history" color="#454545" size={20} />
-       <Text style={{
-         color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
-       }}
-       >
-         商品狀態
-       </Text>
-     </View>
-     <View style={{height:55, width: 120}}>
-        <CheckBox
-          center
-          title="全新"
-          checked={checkNew}
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          onPress={NewStatus}
-        />
-        <CheckBox
-          center
-          title="二手"
-          checked={checkSecond}
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          onPress={SecondStatus}
-        />
-      </View>
-    </View>
-    <View style={styles.nameContainer}>
-    <Icon name="angle-double-down" color="#454545" size={20} style={{left:180, bottom:15}}/>
-    <Text style={{
-      color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5, left:180, bottom:15
-    }}
-    >
-      發文類別
-    </Text>
-  </View>
-  <View style={{height:55, width: 120, left:180, bottom:15}}>
-  <CheckBox
-    center
-    title="出售"
-    checked={checkSell}
-    checkedIcon="dot-circle-o"
-    uncheckedIcon="circle-o"
-    onPress={SellStatus}
-  />
-  <CheckBox
-    center
-    title="收購"
-    checked={checkAcquire}
-    checkedIcon="dot-circle-o"
-    uncheckedIcon="circle-o"
-    onPress={AcquireStatus}
-  />
-  <CheckBox
-  center
-  title="租借"
-  checked={checkRent}
-  checkedIcon="dot-circle-o"
-  uncheckedIcon="circle-o"
-  onPress={RentStatus}
-/>
-   </View>
+          <View style={styles.nameContainer}>
+            <Icon name="history" color="#454545" size={20} />
+            <Text style={{
+              color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5,
+            }}
+            >
+              商品狀態
+            </Text>
+          </View>
+          <View style={{height:55, width: 120}}>
+              <CheckBox
+                center
+                title="全新"
+                checked={checkNew}
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                onPress={NewStatus}
+              />
+              <CheckBox
+                center
+                title="二手"
+                checked={checkSecond}
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                onPress={SecondStatus}
+              />
+            </View>
+          </View>
+          <View style={styles.nameContainer}>
+            <Icon name="angle-double-down" color="#454545" size={20} style={{left:180, bottom:15}}/>
+            <Text style={{
+              color: '#454545', fontSize: 14, fontWeight: '300', marginLeft: 5, left:180, bottom:15
+            }}
+            >
+              發文類別
+            </Text>
+          </View>
+          <View style={{height:55, width: 120, left:180, bottom:15}}>
+              <CheckBox
+                center
+                title="出售"
+                checked={checkSell}
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                onPress={SellStatus}
+              />
+              <CheckBox
+                center
+                title="收購"
+                checked={checkAcquire}
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                onPress={AcquireStatus}
+              />
+              <CheckBox
+              center
+              title="租借"
+              checked={checkRent}
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              onPress={RentStatus}
+            />
+          </View>
 
-    <Button
-    title="發佈"
-    loading={false}
-    loadingProps={{ size: 'small', color: 'white' }}
-    buttonStyle={{
-      backgroundColor: '#777B9A',
-      borderRadius: 15,
-    }}
-    titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
-    containerStyle={{
-      marginHorizontal: 40,
-      height: 50,
-      width: 100,
-      marginVertical: 5,
-      marginLeft:10,
-      top:70
-    }}
-    onPress={handleSend}
-  
-  />
-    </ScrollView>
+          <Button
+            title="發佈"
+            loading={false}
+            loadingProps={{ size: 'small', color: 'white' }}
+            buttonStyle={{
+              backgroundColor: '#777B9A',
+              borderRadius: 15,
+            }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
+            containerStyle={{
+              marginHorizontal: 40,
+              height: 50,
+              width: 100,
+              marginVertical: 5,
+              marginLeft:10,
+              top:70
+            }}
+            onPress={handleSend}
+          />
+      </ScrollView>
     </View>
   );
 };
