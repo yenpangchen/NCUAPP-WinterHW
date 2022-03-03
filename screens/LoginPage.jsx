@@ -47,11 +47,6 @@ const styles = StyleSheet.create({
     borderColor: '#454545',
     borderWidth: 2,
   },
-  // buttonText: {
-  //   color: '#454545',
-  //   fontWeight: '700',
-  //   fontSize: 16,
-  // },
   buttonOutlineText: {
     color: '#454545',
     fontWeight: '700',

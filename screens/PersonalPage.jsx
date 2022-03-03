@@ -92,23 +92,22 @@ const PersonalPage = () => {
 
   return(  
   <SafeAreaView style={styles.container} behavior="padding">  
-   <View style={{flex:1,flexDirection:'row',alignItems:'flex-start'}}>
-      <Icon name="cog" color="#454545" size={25} style={{marginLeft:30}} />
-      <Icon name="heart" color="red" size={25} style={{marginLeft:210,marginRight:20}} />
-      <Icon name="comment" color="#C4C4C4" size={25} />
-   </View>
-  <View style={{flex:1,alignItems:'center'}}>
-    <Image
-      style={{ width: 80, height: 80, margin: 10, borderRadius: 40, bottom:50}}
-      source={{ uri: auth.currentUser?.photoURL }}
-    />
-    <Text style={{fontWeight:'bold', fontSize: 18, textAlign:'center',marginBottom: 20, bottom:50}}>
-     {`${auth.currentUser.displayName}`}
-    </Text>  
-  </View>
+    <View style={{flex:1,flexDirection:'row',alignItems:'flex-start'}}>
+        <Icon name="cog" color="#454545" size={25} style={{marginLeft:30}} />
+        <Icon name="heart" color="red" size={25} style={{marginLeft:210,marginRight:20}} />
+        <Icon name="comment" color="#C4C4C4" size={25} />
+    </View>
+    <View style={{flex:1,alignItems:'center'}}>
+      <Image
+        style={{ width: 80, height: 80, margin: 10, borderRadius: 40, bottom:50}}
+        source={{ uri: auth.currentUser?.photoURL }}
+      />
+      <Text style={{fontWeight:'bold', fontSize: 18, textAlign:'center',marginBottom: 20, bottom:50}}>
+      {`${auth.currentUser.displayName}`}
+      </Text>  
+    </View>
     <View style={{flex:1, flexDirection:'column', alignItems:'flex-start', marginLeft:40, top:10}}>
-      
-        <View style={{flex:0.3, flexDirection:'row'}}>
+      <View style={{flex:0.3, flexDirection:'row'}}>
         <Icon name="info-circle" color="#454545" size={15} />
         <Text style={{fontWeight:'600'}}>  Email: </Text>
         <Text style={{color:'black'}}>
@@ -137,13 +136,10 @@ const PersonalPage = () => {
           <Text style={styles.buttonText}>Sign out</Text>
           </TouchableOpacity>
         </View>
-        
       </ScrollView> 
     </View>
-    
   </SafeAreaView>
   );
-
   };
-
+  
 export default PersonalPage;

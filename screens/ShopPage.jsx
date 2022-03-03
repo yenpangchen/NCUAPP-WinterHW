@@ -214,20 +214,17 @@ const ShopPage = () => {
     items.getAllItems().then((res) => {
       setTimeout(() => { setRefresh(false); }, 500);
     });
-    
   };
 
   return (
-    <SafeAreaView
-      style={styles.container}
-    >
+    <SafeAreaView style={styles.container}>
       <ScrollView
-      refreshControl={(
-        <RefreshControl
-          refreshing={Refresh}
-          onRefresh={onRefresh}
-        />
-    )}
+        refreshControl={(
+          <RefreshControl
+            refreshing={Refresh}
+            onRefresh={onRefresh}
+          />
+        )}
       >
         <View style={styles.searchbar}>
           <Image
@@ -268,7 +265,6 @@ const ShopPage = () => {
         </View>
         {pressedNew ? <NewItemCards /> : <View />}
         {pressedSecond ? <SecondItemsCards /> : <View /> }
-
       </ScrollView>
     </SafeAreaView>
   );
